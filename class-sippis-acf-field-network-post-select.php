@@ -25,7 +25,11 @@ class sippis_acf_field_network_post_select extends acf_field {
   } // end __construct
 
   function ajax_query() {
-    if ( ! acf_verify_ajax() ) {
+    
+    $nonce = acf_request_arg( 'nonce', '' );
+		$key   = acf_request_arg( 'field_key', '' );
+    
+    if ( ! acf_verify_ajax( $nonce, $key ) ) {
       die();
     }
 
@@ -339,6 +343,7 @@ class sippis_acf_field_network_post_select extends acf_field {
     // $field['multiple']  = false;
     $field['ui']        = true;
     $field['ajax']      = true;
+    $field['nonce']     = wp_create_nonce( $field['key'] );
     $field['choices']   = [];
 
     // try to get posts based on field value
